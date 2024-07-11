@@ -4,7 +4,15 @@ import numpy as np
 
 
 #Tensorflow Model Prediction
+import gdown
+
+def download_model_from_drive():
+    url = 'https://drive.google.com/file/d/1z8hF_NpjzAQe_gBJco6pbXvfU5nFk9hH/view?usp=sharing'
+    output = 'trained_model.h5'
+    gdown.download(url, output, quiet=False)
+
 def model_prediction(test_image):
+    download_model_from_drive()
     model = tf.keras.models.load_model("trained_model.h5")
     image = tf.keras.preprocessing.image.load_img(test_image,target_size=(64,64))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
