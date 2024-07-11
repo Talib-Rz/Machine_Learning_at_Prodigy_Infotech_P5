@@ -5,7 +5,7 @@ import requests
 import os
 
 def download_model_from_drive():
-    url = 'https://drive.google.com/uc?id=1z8hF_NpjzAQe_gBJco6pbXvfU5nFk9hH'
+    url = 'https://drive.google.com/file/d/1z8hF_NpjzAQe_gBJco6pbXvfU5nFk9hH/view?usp=sharing'
     output = 'trained_model.h5'
     response = requests.get(url)
     with open(output, 'wb') as f:
@@ -54,7 +54,6 @@ if st.button("Show Image"):
 
 # Predict button
 if st.button("Predict"):
-    st.snow()
     st.write("Our Prediction")
     result_index, label = model_prediction(test_image)
     if result_index != -1:
