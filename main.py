@@ -44,8 +44,6 @@ def model_prediction(test_image):
 # Streamlit app code
 st.sidebar.title("Dashboard")
 st.header("FRUITS & VEGETABLES RECOGNITION SYSTEM")
-image_path = "home_img.jpg"
-st.image(image_path)
 
 st.header("Model Prediction")
 test_image = st.file_uploader("Choose an Image:")
