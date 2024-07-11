@@ -50,4 +50,4 @@ if test_image is not None:
         st.write("Our Prediction")
         result_index, label = model_prediction(test_image)
         if result_index != -1:
-        st.success(f"Model is predicting it's a {label}")
+          st.success(f"Model is predicting it's a {label}")
