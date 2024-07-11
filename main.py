@@ -14,13 +14,20 @@ def download_model_from_drive():
 
 # Function to load and predict using the model
 def model_prediction(test_image):
-    download_model_from_drive()
-    model = tf.keras.models.load_model("trained_model.h5")
-    image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64,64))
-    input_arr = tf.keras.preprocessing.image.img_to_array(image)
-    input_arr = np.array([input_arr])  # convert single image to batch
-    predictions = model.predict(input_arr)
-    return np.argmax(predictions)  # return index of max element
+    download_model_from_drive()  # Ensure model is downloaded before loading
+    model_path = "trained_model.h5"
+    
+    try:
+        model = tf.keras.models.load_model(model_path)
+        image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64,64))
+        input_arr = tf.keras.preprocessing.image.img_to_array(image)
+        input_arr = np.array([input_arr])  # convert single image to batch
+        predictions = model.predict(input_arr)
+        return np.argmax(predictions)  # return index of max element
+    except OSError as e:
+        st.error(f"Error loading model: {e}")
+    except Exception as e:
+        st.error(f"Exception during prediction: {e}")
 
 # Sidebar
 st.sidebar.title("Dashboard")
