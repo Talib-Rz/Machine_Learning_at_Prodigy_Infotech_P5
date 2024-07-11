@@ -1,63 +1,42 @@
 import streamlit as st
 import tensorflow as tf
 import numpy as np
-
-
-#Tensorflow Model Prediction
 import gdown
 
+# Function to download the model from Google Drive
 def download_model_from_drive():
     url = 'https://drive.google.com/file/d/1z8hF_NpjzAQe_gBJco6pbXvfU5nFk9hH/view?usp=sharing'
     output = 'trained_model.h5'
     gdown.download(url, output, quiet=False)
 
+# Function to load and predict using the model
 def model_prediction(test_image):
     download_model_from_drive()
     model = tf.keras.models.load_model("trained_model.h5")
-    image = tf.keras.preprocessing.image.load_img(test_image,target_size=(64,64))
+    image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64,64))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
-    input_arr = np.array([input_arr]) #convert single image to batch
+    input_arr = np.array([input_arr])  # convert single image to batch
     predictions = model.predict(input_arr)
-    return np.argmax(predictions) #return index of max element
+    return np.argmax(predictions)  # return index of max element
 
-#Sidebar
+# Sidebar
 st.sidebar.title("Dashboard")
-app_mode = st.sidebar.selectbox("Select Page",["Home","About Project","Prediction"])
 
-#Main Page
-if(app_mode=="Home"):
-    st.header("FRUITS & VEGETABLES RECOGNITION SYSTEM")
-    image_path = "home_img.jpg"
-    st.image(image_path)
+# Main Page (Prediction Page)
+st.header("FRUITS & VEGETABLES RECOGNITION SYSTEM")
+test_image = st.file_uploader("Choose an Image:")
 
-#About Project
-elif(app_mode=="About Project"):
-    st.header("About Project")
-    st.subheader("About Dataset")
-    st.text("This dataset contains images of the following food items:")
-    st.code("fruits- banana, apple, pear, grapes, orange, kiwi, watermelon, pomegranate, pineapple, mango.")
-    st.code("vegetables- cucumber, carrot, capsicum, onion, potato, lemon, tomato, raddish, beetroot, cabbage, lettuce, spinach, soy bean, cauliflower, bell pepper, chilli pepper, turnip, corn, sweetcorn, sweet potato, paprika, jalepeño, ginger, garlic, peas, eggplant.")
-    st.subheader("Content")
-    st.text("This dataset contains three folders:")
-    st.text("1. train (100 images each)")
-    st.text("2. test (10 images each)")
-    st.text("3. validation (10 images each)")
-
-#Prediction Page
-elif(app_mode=="Prediction"):
-    st.header("Model Prediction")
-    test_image = st.file_uploader("Choose an Image:")
-    if(st.button("Show Image")):
-        st.image(test_image,width=4,use_column_width=True)
-    #Predict button
-    if(st.button("Predict")):
-        st.snow()
+if test_image is not None:
+    if st.button("Show Image"):
+        st.image(test_image, width=4, use_column_width=True)
+    
+    if st.button("Predict"):
         st.write("Our Prediction")
         result_index = model_prediction(test_image)
-        #Reading Labels
+        
+        # Reading Labels
         with open("labels.txt") as f:
             content = f.readlines()
-        label = []
-        for i in content:
-            label.append(i[:-1])
-        st.success("Model is Predicting it's a {}".format(label[result_index]))
+        labels = [line.strip() for line in content]
+        
+        st.success("Model is predicting it's a {}".format(labels[result_index]))
