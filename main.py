@@ -42,7 +42,7 @@ def model_prediction(test_image):
         return -1, "Error"
 
 # Streamlit app code
-st.sidebar.title("Dashboard")
+st.sidebar.title("Hi! I'm Talib")
 st.header("FRUITS & VEGETABLES RECOGNITION SYSTEM")
 
 st.header("Model Prediction")
