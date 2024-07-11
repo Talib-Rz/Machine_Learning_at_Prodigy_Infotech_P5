@@ -44,9 +44,10 @@ if test_image is not None:
         st.write("Our Prediction")
         result_index = model_prediction(test_image)
         
-        # Reading Labels
-        with open("labels.txt") as f:
-            content = f.readlines()
-        labels = [line.strip() for line in content]
-        
-        st.success("Model is predicting it's a {}".format(labels[result_index]))
+        # Predict button
+    if st.button("Predict"):
+        st.snow()
+        st.write("Our Prediction")
+        result_index, label = model_prediction(test_image)
+        if result_index != -1:
+        st.success(f"Model is predicting it's a {label}")
