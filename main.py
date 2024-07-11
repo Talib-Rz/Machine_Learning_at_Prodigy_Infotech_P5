@@ -7,7 +7,10 @@ import gdown
 def download_model_from_drive():
     url = 'https://drive.google.com/file/d/1z8hF_NpjzAQe_gBJco6pbXvfU5nFk9hH/view?usp=sharing'
     output = 'trained_model.h5'
-    gdown.download(url, output, quiet=False)
+    try:
+        gdown.download(url, output, quiet=True)
+    except Exception as e:
+        st.error(f"Error downloading model: {e}")
 
 # Function to load and predict using the model
 def model_prediction(test_image):
