@@ -1,21 +1,26 @@
 import streamlit as st
 import tensorflow as tf
 import numpy as np
-import requests
 import os
+from PIL import Image
 
-def model_prediction(test_image):
+def model_prediction(image):
     model_path = "trained_model.h5"
     
     try:
+        # Load the model
         model = tf.keras.models.load_model(model_path)
-        image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64,64))
+        
+        # Process the image
+        image = image.resize((64, 64))
         input_arr = tf.keras.preprocessing.image.img_to_array(image)
-        input_arr = np.array([input_arr])  # convert single image to batch
+        input_arr = np.array([input_arr])  # Convert single image to batch
+        
+        # Make prediction
         predictions = model.predict(input_arr)
         result_index = np.argmax(predictions)
         
-        # Reading Labels
+        # Read labels
         labels_file = "labels.txt"
         if os.path.isfile(labels_file):
             with open(labels_file) as f:
@@ -38,13 +43,13 @@ st.sidebar.title("Hi! I'm Talib")
 st.header("FRUITS & VEGETABLES RECOGNITION SYSTEM")
 
 st.header("Model Prediction")
-test_image = st.file_uploader("Choose an Image:")
-if st.button("Show Image"):
-    st.image(test_image, use_column_width=True)
-
-# Predict button
-if st.button("Predict"):
-    st.write("Our Prediction")
-    result_index, label = model_prediction(test_image)
-    if result_index != -1:
-        st.success(f"Model is predicting it's a {label}")
+uploaded_file = st.file_uploader("Choose an Image:", type=["jpg", "jpeg", "png"])
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption='Uploaded Image', use_column_width=True)
+    
+    if st.button("Predict"):
+        st.write("Our Prediction")
+        result_index, label = model_prediction(image)
+        if result_index != -1:
+            st.success(f"Model is predicting it's a {label}")
