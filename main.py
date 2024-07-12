@@ -4,15 +4,7 @@ import numpy as np
 import requests
 import os
 
-def download_model_from_drive():
-    url = 'https://drive.google.com/file/d/1z8hF_NpjzAQe_gBJco6pbXvfU5nFk9hH/view?usp=sharing'
-    output = 'trained_model.h5'
-    response = requests.get(url)
-    with open(output, 'wb') as f:
-        f.write(response.content)
-
 def model_prediction(test_image):
-    download_model_from_drive()
     model_path = "trained_model.h5"
     
     try:
