@@ -15,7 +15,7 @@ def load_model():
         st.error(f"Error loading model: {e}")
         return None
 
-# Function to make predictions
+# Function to make prediction
 def model_prediction(image, model):
     try:
         # Process the image
