@@ -4,7 +4,7 @@ import numpy as np
 import os
 from PIL import Image
 
-# Load the model once when the app starts
+# Function to load the model
 @st.cache(allow_output_mutation=True)
 def load_model():
     model_path = "trained_model.h5"
@@ -15,7 +15,7 @@ def load_model():
         st.error(f"Error loading model: {e}")
         return None
 
-# Function to make a prediction
+# Function to make predictions
 def model_prediction(image, model):
     try:
         # Process the image
@@ -53,13 +53,18 @@ if model is not None:
     st.header("Model Prediction")
     uploaded_file = st.file_uploader("Choose an Image:", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        st.image(image, caption='Uploaded Image', use_column_width=True)
+        try:
+            image = Image.open(uploaded_file)
+            st.image(image, caption='Uploaded Image', use_column_width=True)
+            
+            if st.button("Predict"):
+                st.write("Our Prediction")
+                result_index, label = model_prediction(image, model)
+                if result_index != -1:
+                    st.success(f"Model is predicting it's a {label}")
         
-        if st.button("Predict"):
-            st.write("Our Prediction")
-            result_index, label = model_prediction(image, model)
-            if result_index != -1:
-                st.success(f"Model is predicting it's a {label}")
+        except Exception as e:
+            st.error(f"Error processing image: {e}")
+
 else:
     st.error("Model could not be loaded.")
