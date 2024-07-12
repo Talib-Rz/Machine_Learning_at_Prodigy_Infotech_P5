@@ -59,6 +59,7 @@ if model is not None:
             
             if st.button("Predict"):
                 st.write("Our Prediction")
+                st.write("If it is not giving right prediction means this app is in under contstruction!, Please visit again Thank You!")
                 result_index, label = model_prediction(image, model)
                 if result_index != -1:
                     st.success(f"Model is predicting it's a {label}")
